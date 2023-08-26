@@ -20,6 +20,7 @@ class EmployeeController extends Controller
         $age = $request->input('age');
         $phone = $request->input('phone');
         $team_id = $request->input('team_id');
+        $company_id = $request->input('company_id');
         $role_id = $request->input('role_id');
         $limit = $request->input('limit');
 
@@ -60,6 +61,12 @@ class EmployeeController extends Controller
 
         if($team_id){
             $employees->where('team_id',$team_id);
+        }
+
+        if($company_id){
+            $employees->whereHas('team', function($query) use ($company_id){
+                $query->where('company_id',$company_id);
+            });
         }
         
         return ResponseFormatter::success([
