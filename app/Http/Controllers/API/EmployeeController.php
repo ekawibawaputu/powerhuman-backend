@@ -24,7 +24,7 @@ class EmployeeController extends Controller
         $role_id = $request->input('role_id');
         $limit = $request->input('limit');
 
-        $employeeQuery = Employee::query();
+        $employeeQuery = Employee::with('team','role');
 
         // get single employee
         if($id){
@@ -69,10 +69,10 @@ class EmployeeController extends Controller
             });
         }
         
-        return ResponseFormatter::success([
+        return ResponseFormatter::success(
             $employees->paginate($limit),
             'Employee found'
-        ]);
+        );
     }
 
     public function create(CreateEmployeeRequest $request)
@@ -90,7 +90,7 @@ class EmployeeController extends Controller
                 'gender' => $request->gender,
                 'age' => $request->age,
                 'phone' => $request->phone,
-                'photo' => $path,
+                'photo' => isset($path) ? $path : '',
                 'team_id' => $request->team_id,
                 'role_id' => $request->role_id
             ]);

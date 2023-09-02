@@ -19,7 +19,7 @@ class RoleController extends Controller
         $limit = $request->input('limit');
         $with_responsibilities = $request->input('with_responsibilities', false);
 
-        $roleQuery = Role::query();
+        $roleQuery = Role::withCount('employees');
 
         // get single role
         if($id){
@@ -42,10 +42,10 @@ class RoleController extends Controller
             $roles->with('responsibilities');
         }
         
-        return ResponseFormatter::success([
+        return ResponseFormatter::success(
             $roles->paginate($limit),
             'Role found'
-        ]);
+        );
     }
 
     public function create(CreateRoleRequest $request)

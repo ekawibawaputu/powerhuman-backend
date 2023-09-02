@@ -36,10 +36,10 @@ class ResponsibilityController extends Controller
             $responsibilities->where('name','like','%',$name,'%');
         }
         
-        return ResponseFormatter::success([
+        return ResponseFormatter::success(
             $responsibilities->paginate($limit),
             'Responsibility found'
-        ]);
+        );
     }
 
     public function create(CreateResponsibilityRequest $request)
